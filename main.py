@@ -72,10 +72,9 @@ class Chess:
 				abilities = self.possibleMoves()
 				for i in abilities:
 					if str(i) == str(placePiece):
-						if self.moveCheck(board, placePiece) == True:
+						if self.moveCheck(board, placePiece, self.position) == True:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
-							print(placePiece)
 							for i,j in blackPieces.items():
 								for h in j:
 									if h.position == placePiece:
@@ -84,8 +83,36 @@ class Chess:
 							pass
 						break
 
-			def moveCheck(self, board, i):
+			def moveCheck(self, board, i, position):
 				i = int(i)
+				position = int(position)
+				diff = i - position
+				checkerList = []
+				if diff > 0 and diff < 10:
+					for j in range(diff-1):
+						checkerList.append(j+1)
+
+				if diff >= 10:
+					dividedTen = int(diff / 10)
+					for j in range(dividedTen-1):
+						j = j+1
+						j = j*10
+						checkerList.append(j)
+
+				
+
+				print(checkerList)
+				if len(checkerList) != 0:
+					for m in checkerList:
+						n = position + m
+						if board[n].name != " ":
+							print("Piece in the way")
+							return False
+						
+				# i is where you want it to go
+				# position is its current position
+
+				
 				
 				if board[i].name == " ":
 					board[i].position = ' '
@@ -155,6 +182,7 @@ class Chess:
 			position= "{y}2".format(y=y)
 			position = int(position)
 			whitePawns.append(White.Pawn(position, "0"))
+		whitePawns.append(White.Pawn(41,"0"))
 		whitePieces["pawns"] = whitePawns
 
 		blackPawns = []
