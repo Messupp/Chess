@@ -1,5 +1,5 @@
 import string
-from termcolor import colored
+
 
 class Chess:
 	class Empty():
@@ -22,14 +22,20 @@ class Chess:
 						possibleMove.append(self.position + abilities)
 				return possibleMove
 
-			def makeMove(self, placePiece, board):
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
 				abilities = self.possibleMoves()
 				for i in abilities:
 					if str(i) == str(placePiece):
 						if self.moveCheck(board, placePiece) == True:
 							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							print(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
 						else:
-							print("Cant go there")
+							pass
 						break
 
 			def moveCheck(self, board, i):
@@ -37,11 +43,8 @@ class Chess:
 				
 				if board[i].name == " ":
 					board[i].position = ' '
-					print('ok')
 					return True
 				else:
-					print('something there')
-					print(board[i].colour)
 					if board[i].colour == "Black":
 						return True
 						
@@ -54,11 +57,10 @@ class Chess:
 		class Rook():
 			def __init__(self, position, move):
 				self.name = "Rook"
+				self.colour = "White"
 				self.position= position
-				self.ability=[1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80]
+				self.ability=[1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,-10,-20,-30,-40,-50,-60,-70,-80,-1,-2,-3,-4,-5,-6,-7,-8]
 				self.alive=True
-			def movePiece(self):
-				self.position= move
 
 			def possibleMoves(self):
 				possibleMove = []
@@ -66,17 +68,40 @@ class Chess:
 						possibleMove.append(self.position + abilities)
 				return possibleMove
 
-			def makeMove(self, placePiece):
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
 				abilities = self.possibleMoves()
 				for i in abilities:
 					if str(i) == str(placePiece):
-						self.position=int(placePiece)
+						if self.moveCheck(board, placePiece) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							print(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
 						break
+
+			def moveCheck(self, board, i):
+				i = int(i)
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
 
 	class Black():
 		class Pawn():
 			def __init__(self, position, move):
-				self.name = "Pawn"
+				self.name = "pawn"
 				self.colour = "Black"
 				self.position= position
 				self.ability=[-1,-2]
@@ -99,7 +124,7 @@ class Chess:
 						break
 		class Rook():
 			def __init__(self, position, move):
-				self.name = "Rook"
+				self.name = "rook"
 				self.position= position
 				self.ability=[-1,-2,-3,-4,-5,-6,-7,-8,-10,-20,-30,-40,-50,-60,-70,-80]
 				self.alive=True
@@ -203,26 +228,16 @@ class Chess:
 			while Turn == True:
 				print('White Turn')
 				pickPiece = input("Pick a piece (xy) : ")
-				
-			
-				
 				for i,j in whitePieces.items():
 					for k in j:
 						if pickPiece == str(k.position):
 							print("You picked:",k.name)
 							placePiece = input("Put it where (xy) : ")
-							
-							
-							
-
-							k.makeMove(placePiece, board)
-
+							k.makeMove(placePiece, board, whitePieces, blackPieces)
 							print('New position', k.position)
 							board = printBoard(whitePieces,blackPieces, board, Empty)
 							if str(pickPiece) != str(k.position):
-
 								Turn = False
-
 
 			Turn = True
 			while Turn == True:
