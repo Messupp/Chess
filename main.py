@@ -1,4 +1,5 @@
 import string
+from termcolor import colored
 
 class Chess:
 	class Empty():
@@ -35,15 +36,19 @@ class Chess:
 				i = int(i)
 				
 				if board[i].name == " ":
+					board[i].position = ' '
 					print('ok')
 					return True
 				else:
 					print('something there')
+					print(board[i].colour)
 					if board[i].colour == "Black":
-						print(board[i].colour)
+						return True
+						
 					if board[i].colour == "White":
-						pass
-					return True
+						print("Thats your piece")
+						return False
+					
 
 
 		class Rook():
@@ -208,7 +213,7 @@ class Chess:
 							placePiece = input("Put it where (xy) : ")
 							
 							
-							board[k.position] = ' '
+							
 
 							k.makeMove(placePiece, board)
 
@@ -244,6 +249,7 @@ class Chess:
 
 
 	# Runs
+
 	whitePieces, blackPieces = startingPosition(White, Black)	
 	playGame(whitePieces, blackPieces, Empty)
 
