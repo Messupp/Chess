@@ -1,16 +1,19 @@
 import string
 
 class Chess:
+	class Empty():
+		def __init__(self):
+				self.name = " "
+			
+
 	class White():
 		class Pawn():
 			def __init__(self, position, move):
 				self.name = "Pawn"
+				self.colour = "White"
 				self.position= position
-				self.ability=[1,2]
+				self.ability=[1,2,11,-9]
 				self.alive=True
-
-			def movePiece(self):
-				self.position= move
 
 			def possibleMoves(self):
 				possibleMove = []
@@ -18,12 +21,31 @@ class Chess:
 						possibleMove.append(self.position + abilities)
 				return possibleMove
 
-			def makeMove(self, placePiece):
+			def makeMove(self, placePiece, board):
 				abilities = self.possibleMoves()
 				for i in abilities:
 					if str(i) == str(placePiece):
-						self.position=int(placePiece)
+						if self.moveCheck(board, placePiece) == True:
+							self.position=int(placePiece)
+						else:
+							print("Cant go there")
 						break
+
+			def moveCheck(self, board, i):
+				i = int(i)
+				
+				if board[i].name == " ":
+					print('ok')
+					return True
+				else:
+					print('something there')
+					if board[i].colour == "Black":
+						print(board[i].colour)
+					if board[i].colour == "White":
+						pass
+					return True
+
+
 		class Rook():
 			def __init__(self, position, move):
 				self.name = "Rook"
@@ -50,6 +72,7 @@ class Chess:
 		class Pawn():
 			def __init__(self, position, move):
 				self.name = "Pawn"
+				self.colour = "Black"
 				self.position= position
 				self.ability=[-1,-2]
 				self.alive=True
@@ -125,13 +148,10 @@ class Chess:
 		return whitePieces, blackPieces
 
 	
-
-		
-
-	def playGame(whitePieces, blackPieces):
+	def playGame(whitePieces, blackPieces, Empty):
 		board = False
 		
-		def printBoard(whitePieces,blackPieces, board):
+		def printBoard(whitePieces,blackPieces, board, Empty):
 
 			if board == False:
 				board = {
@@ -145,27 +165,29 @@ class Chess:
 						11:' ',21:' ',31:' ',41:' ',51:' ',61:' ',71:' ',81:' ',
 						}
 
-			
+			for pieces in board:
+				board[pieces]= Empty()
+
 			for i,j in whitePieces.items():
 				for pieces in j:
-					board[pieces.position] = pieces.name[0]
+					board[pieces.position] = pieces
 			for i,j in blackPieces.items():
 				for pieces in j:
-					board[pieces.position] = pieces.name[0]
+					board[pieces.position] = pieces
+
 			print('\n')
-			print('  8 |{a8}|{b8}|{c8}|{d8}|{e8}|{f8}|{g8}|{h8}|'.format(a8=board[18], b8=board[28], c8=board[38], d8=board[48], e8=board[58], f8=board[68], g8=board[78], h8=board[88]))
-			print('  7 |{a7}|{b7}|{c7}|{d7}|{e7}|{f7}|{g7}|{h7}|'.format(a7=board[17], b7=board[27], c7=board[37], d7=board[47], e7=board[57], f7=board[67], g7=board[77], h7=board[87]))
-			print('  6 |{a6}|{b6}|{c6}|{d6}|{e6}|{f6}|{g6}|{h6}|'.format(a6=board[16], b6=board[26], c6=board[36], d6=board[46], e6=board[56], f6=board[66], g6=board[76], h6=board[86]))
-			print('  5 |{a5}|{b5}|{c5}|{d5}|{e5}|{f5}|{g5}|{h5}|'.format(a5=board[15], b5=board[25], c5=board[35], d5=board[45], e5=board[55], f5=board[65], g5=board[75], h5=board[85]))
-			print('  4 |{a4}|{b4}|{c4}|{d4}|{e4}|{f4}|{g4}|{h4}|'.format(a4=board[14], b4=board[24], c4=board[34], d4=board[44], e4=board[54], f4=board[64], g4=board[74], h4=board[84]))
-			print('  3 |{a3}|{b3}|{c3}|{d3}|{e3}|{f3}|{g3}|{h3}|'.format(a3=board[13], b3=board[23], c3=board[33], d3=board[43], e3=board[53], f3=board[63], g3=board[73], h3=board[83]))
-			print('  2 |{a2}|{b2}|{c2}|{d2}|{e2}|{f2}|{g2}|{h2}|'.format(a2=board[12], b2=board[22], c2=board[32], d2=board[42], e2=board[52], f2=board[62], g2=board[72], h2=board[82]))
-			print('  1 |{a1}|{b1}|{c1}|{d1}|{e1}|{f1}|{g1}|{h1}|'.format(a1=board[11], b1=board[21], c1=board[31], d1=board[41], e1=board[51], f1=board[61], g1=board[71], h1=board[81]))
+			print('  8 |{a8}|{b8}|{c8}|{d8}|{e8}|{f8}|{g8}|{h8}|'.format(a8=board[18].name[0], b8=board[28].name[0], c8=board[38].name[0], d8=board[48].name[0], e8=board[58].name[0], f8=board[68].name[0], g8=board[78].name[0], h8=board[88].name[0]))
+			print('  7 |{a7}|{b7}|{c7}|{d7}|{e7}|{f7}|{g7}|{h7}|'.format(a7=board[17].name[0], b7=board[27].name[0], c7=board[37].name[0], d7=board[47].name[0], e7=board[57].name[0], f7=board[67].name[0], g7=board[77].name[0], h7=board[87].name[0]))
+			print('  6 |{a6}|{b6}|{c6}|{d6}|{e6}|{f6}|{g6}|{h6}|'.format(a6=board[16].name[0], b6=board[26].name[0], c6=board[36].name[0], d6=board[46].name[0], e6=board[56].name[0], f6=board[66].name[0], g6=board[76].name[0], h6=board[86].name[0]))
+			print('  5 |{a5}|{b5}|{c5}|{d5}|{e5}|{f5}|{g5}|{h5}|'.format(a5=board[15].name[0], b5=board[25].name[0], c5=board[35].name[0], d5=board[45].name[0], e5=board[55].name[0], f5=board[65].name[0], g5=board[75].name[0], h5=board[85].name[0]))
+			print('  4 |{a4}|{b4}|{c4}|{d4}|{e4}|{f4}|{g4}|{h4}|'.format(a4=board[14].name[0], b4=board[24].name[0], c4=board[34].name[0], d4=board[44].name[0], e4=board[54].name[0], f4=board[64].name[0], g4=board[74].name[0], h4=board[84].name[0]))
+			print('  3 |{a3}|{b3}|{c3}|{d3}|{e3}|{f3}|{g3}|{h3}|'.format(a3=board[13].name[0], b3=board[23].name[0], c3=board[33].name[0], d3=board[43].name[0], e3=board[53].name[0], f3=board[63].name[0], g3=board[73].name[0], h3=board[83].name[0]))
+			print('  2 |{a2}|{b2}|{c2}|{d2}|{e2}|{f2}|{g2}|{h2}|'.format(a2=board[12].name[0], b2=board[22].name[0], c2=board[32].name[0], d2=board[42].name[0], e2=board[52].name[0], f2=board[62].name[0], g2=board[72].name[0], h2=board[82].name[0]))
+			print('  1 |{a1}|{b1}|{c1}|{d1}|{e1}|{f1}|{g1}|{h1}|'.format(a1=board[11].name[0], b1=board[21].name[0], c1=board[31].name[0], d1=board[41].name[0], e1=board[51].name[0], f1=board[61].name[0], g1=board[71].name[0], h1=board[81].name[0]))
 			print('     1 2 3 4 5 6 7 8 ')
 			return board
 
-
-		board = printBoard(whitePieces, blackPieces, board)
+		board = printBoard(whitePieces, blackPieces, board, Empty)
 
 		play = True
 		while play == True:
@@ -177,20 +199,25 @@ class Chess:
 				print('White Turn')
 				pickPiece = input("Pick a piece (xy) : ")
 				
+			
+				
 				for i,j in whitePieces.items():
 					for k in j:
 						if pickPiece == str(k.position):
 							print("You picked:",k.name)
 							placePiece = input("Put it where (xy) : ")
 							
+							
 							board[k.position] = ' '
 
-							k.makeMove(placePiece)
+							k.makeMove(placePiece, board)
 
 							print('New position', k.position)
-							board = printBoard(whitePieces,blackPieces, board)
+							board = printBoard(whitePieces,blackPieces, board, Empty)
 							if str(pickPiece) != str(k.position):
+
 								Turn = False
+
 
 			Turn = True
 			while Turn == True:
@@ -208,7 +235,7 @@ class Chess:
 							k.makeMove(placePiece)
 
 							print('New position', k.position)
-							board = printBoard(whitePieces, blackPieces, board)
+							board = printBoard(whitePieces, blackPieces, board, Empty)
 							if str(pickPiece) != str(k.position):
 								Turn = False
 					
@@ -218,7 +245,7 @@ class Chess:
 
 	# Runs
 	whitePieces, blackPieces = startingPosition(White, Black)	
-	playGame(whitePieces, blackPieces)
+	playGame(whitePieces, blackPieces, Empty)
 
 
 
