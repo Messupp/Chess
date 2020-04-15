@@ -87,6 +87,7 @@ class Chess:
 				i = int(i)
 				position = int(position)
 				diff = i - position
+				print('diff',diff)
 				checkerList = []
 				if diff > 0 and diff < 10:
 					for j in range(diff-1):
@@ -99,7 +100,19 @@ class Chess:
 						j = j*10
 						checkerList.append(j)
 
-				
+				if diff < 0 and diff > -10:
+					for j in range(abs(diff+1)):
+						j= j+1
+						j = -j
+						checkerList.append(j)
+
+				if diff <= -10:
+					dividedTen = int(diff / 10)
+					for j in range(abs(dividedTen+1)):
+						j = j+1
+						j = j*10
+						j = -j
+						checkerList.append(j)
 
 				print(checkerList)
 				if len(checkerList) != 0:
