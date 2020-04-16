@@ -338,7 +338,7 @@ class Chess:
 						k = k * 11
 						checkerList.append(-k)
 
-				if diff > 0 and diff < 10:
+				if diff > 0 and diff < 9:
 					for j in range(diff-1):
 						checkerList.append(j+1)
 				if diff >= 10 and diff % 10 == 0:
@@ -347,7 +347,7 @@ class Chess:
 						j = j+1
 						j = j*10
 						checkerList.append(j)
-				if diff < 0 and diff > -10:
+				if diff < 0 and diff > -9:
 					for j in range(abs(diff+1)):
 						j= j+1
 						j = -j
