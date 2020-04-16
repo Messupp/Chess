@@ -136,6 +136,142 @@ class Chess:
 						print("Thats your piece")
 						return False
 
+		class Bishop():
+			def __init__(self, position, move):
+				self.name = "Bishop"
+				self.colour = "White"
+				self.position= position
+				self.ability=[11,22,33,44,55,66,77,9,18,27,36,45,54,63,72,-11,-22,-33,-44,-55,-66,-77,-9,-18,-27,-36,-45,-54,-63,-72]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+				if diff > 0 and diff % 11 == 0:
+					howMany = int(diff / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(k)
+				if diff > 0 and diff % 9 == 0:
+					howMany = int(diff / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(k)
+				if diff < 0 and abs(diff) % 9 == 0:
+					howMany = int(abs(diff) / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(-k)
+				if diff < 0 and diff % 11 == 0:
+					print("yo")
+					howMany = int(abs(diff) / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(-k)
+
+
+
+				if len(checkerList) != 0:
+					for m in checkerList:
+						n = position + m
+						if board[n].name != " ":
+							print("Piece in the way")
+							return False				
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
+
+		class Knight():
+			def __init__(self, position, move):
+				self.name = "Knight"
+				self.colour = "White"
+				self.position= position
+				self.ability=[8,12,19,21,-8,-12,-19,-21]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+							
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
 	class Black():
 		class Pawn():
 			def __init__(self, position, move):
@@ -213,6 +349,19 @@ class Chess:
 		blackRooks.append(Black.Rook(18, "0"))
 		blackRooks.append(Black.Rook(88, "0"))
 		blackPieces["rooks"] = blackRooks
+
+		# BISHOPS
+		whiteBishops = []
+		whiteBishops.append(White.Bishop(31, "0"))
+		whiteBishops.append(White.Bishop(61, "0"))
+		whitePieces["bishops"] = whiteBishops
+
+		# KNIGHTS
+		whiteKnights = []
+		whiteKnights.append(White.Knight(21, "0"))
+		whiteKnights.append(White.Knight(71, "0"))
+		whitePieces["knights"] = whiteKnights
+
 
 		return whitePieces, blackPieces
 
