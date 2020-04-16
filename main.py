@@ -272,17 +272,170 @@ class Chess:
 						print("Thats your piece")
 						return False
 
+		class Queen():
+			def __init__(self, position, move):
+				self.name = "Queen"
+				self.colour = "White"
+				self.position= position
+				self.ability=[1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,-10,-20,-30,-40,-50,-60,-70,-80,-1,-2,-3,-4,-5,-6,-7,
+							 -8,11,22,33,44,55,66,77,9,18,27,36,45,54,63,72,-11,-22,-33,-44,-55,-66,-77,-9,-18,-27,-36,-45,
+							 -54,-63,-72]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+				if diff > 0 and diff % 11 == 0:
+					howMany = int(diff / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(k)
+				if diff > 0 and diff % 9 == 0:
+					howMany = int(diff / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(k)
+				if diff < 0 and abs(diff) % 9 == 0:
+					howMany = int(abs(diff) / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(-k)
+				if diff < 0 and diff % 11 == 0:
+					print("yo")
+					howMany = int(abs(diff) / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(-k)
+
+				if diff > 0 and diff < 10:
+					for j in range(diff-1):
+						checkerList.append(j+1)
+				if diff >= 10 and diff % 10 == 0:
+					dividedTen = int(diff / 10)
+					for j in range(dividedTen-1):
+						j = j+1
+						j = j*10
+						checkerList.append(j)
+				if diff < 0 and diff > -10:
+					for j in range(abs(diff+1)):
+						j= j+1
+						j = -j
+						checkerList.append(j)
+				if diff <= -10 and diff % 10 == 0:
+					dividedTen = int(diff / 10)
+					for j in range(abs(dividedTen+1)):
+						j = j+1
+						j = j*10
+						j = -j
+						checkerList.append(j)
+				if len(checkerList) != 0:
+					for m in checkerList:
+						n = position + m
+						if board[n].name != " ":
+							print("Piece in the way")
+							return False				
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
+		class King():
+			def __init__(self, position, move):
+				self.name = "+King"
+				self.colour = "White"
+				self.position= position
+				self.ability=[1,9,10,11,-1,-9,-10,-11]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+							
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
 	class Black():
 		class Pawn():
 			def __init__(self, position, move):
 				self.name = "pawn"
 				self.colour = "Black"
 				self.position= position
-				self.ability=[-1,-2]
+				self.ability=[-1,-2,-11,9]
 				self.alive=True
-				
-			def movePiece(self):
-				self.position= move
 
 			def possibleMoves(self):
 				possibleMove = []
@@ -290,21 +443,50 @@ class Chess:
 						possibleMove.append(self.position + abilities)
 				return possibleMove
 
-			def makeMove(self, placePiece):
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
 				abilities = self.possibleMoves()
 				for i in abilities:
 					if str(i) == str(placePiece):
-						self.position=int(placePiece)
+						if self.moveCheck(board, placePiece,self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							print(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
 						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+
+				added = i
+				
+				if i > 88 or i < 11 or str(i)[1] == "9" or str(i)[1] == "0":
+					return False
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+					
+
+
 		class Rook():
 			def __init__(self, position, move):
 				self.name = "rook"
 				self.colour = "Black"
 				self.position= position
-				self.ability=[-1,-2,-3,-4,-5,-6,-7,-8,-10,-20,-30,-40,-50,-60,-70,-80]
+				self.ability=[1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,-10,-20,-30,-40,-50,-60,-70,-80,-1,-2,-3,-4,-5,-6,-7,-8]
 				self.alive=True
-			def movePiece(self):
-				self.position= move
 
 			def possibleMoves(self):
 				possibleMove = []
@@ -312,12 +494,361 @@ class Chess:
 						possibleMove.append(self.position + abilities)
 				return possibleMove
 
-			def makeMove(self, placePiece):
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
 				abilities = self.possibleMoves()
 				for i in abilities:
 					if str(i) == str(placePiece):
-						self.position=int(placePiece)
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
 						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+				if diff > 0 and diff < 10:
+					for j in range(diff-1):
+						checkerList.append(j+1)
+				if diff >= 10:
+					dividedTen = int(diff / 10)
+					for j in range(dividedTen-1):
+						j = j+1
+						j = j*10
+						checkerList.append(j)
+				if diff < 0 and diff > -10:
+					for j in range(abs(diff+1)):
+						j= j+1
+						j = -j
+						checkerList.append(j)
+				if diff <= -10:
+					dividedTen = int(diff / 10)
+					for j in range(abs(dividedTen+1)):
+						j = j+1
+						j = j*10
+						j = -j
+						checkerList.append(j)
+				if len(checkerList) != 0:
+					for m in checkerList:
+						n = position + m
+						if board[n].name != " ":
+							print("Piece in the way")
+							return False				
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
+		class Bishop():
+			def __init__(self, position, move):
+				self.name = "bishop"
+				self.colour = "Black"
+				self.position= position
+				self.ability=[11,22,33,44,55,66,77,9,18,27,36,45,54,63,72,-11,-22,-33,-44,-55,-66,-77,-9,-18,-27,-36,-45,-54,-63,-72]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+				if diff > 0 and diff % 11 == 0:
+					howMany = int(diff / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(k)
+				if diff > 0 and diff % 9 == 0:
+					howMany = int(diff / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(k)
+				if diff < 0 and abs(diff) % 9 == 0:
+					howMany = int(abs(diff) / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(-k)
+				if diff < 0 and diff % 11 == 0:
+					print("yo")
+					howMany = int(abs(diff) / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(-k)
+
+
+
+				if len(checkerList) != 0:
+					for m in checkerList:
+						n = position + m
+						if board[n].name != " ":
+							print("Piece in the way")
+							return False				
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
+
+		class Knight():
+			def __init__(self, position, move):
+				self.name = "knight"
+				self.colour = "Black"
+				self.position= position
+				self.ability=[8,12,19,21,-8,-12,-19,-21]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+							
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
+		class Queen():
+			def __init__(self, position, move):
+				self.name = "queen"
+				self.colour = "Black"
+				self.position= position
+				self.ability=[1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,-10,-20,-30,-40,-50,-60,-70,-80,-1,-2,-3,-4,-5,-6,-7,
+							 -8,11,22,33,44,55,66,77,9,18,27,36,45,54,63,72,-11,-22,-33,-44,-55,-66,-77,-9,-18,-27,-36,-45,
+							 -54,-63,-72]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+				if diff > 0 and diff % 11 == 0:
+					howMany = int(diff / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(k)
+				if diff > 0 and diff % 9 == 0:
+					howMany = int(diff / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(k)
+				if diff < 0 and abs(diff) % 9 == 0:
+					howMany = int(abs(diff) / 9)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 9
+						checkerList.append(-k)
+				if diff < 0 and diff % 11 == 0:
+					print("yo")
+					howMany = int(abs(diff) / 11)
+					for j in range(howMany-1):
+						k = j+1
+						k = k * 11
+						checkerList.append(-k)
+
+				if diff > 0 and diff < 10:
+					for j in range(diff-1):
+						checkerList.append(j+1)
+				if diff >= 10 and diff % 10 == 0:
+					dividedTen = int(diff / 10)
+					for j in range(dividedTen-1):
+						j = j+1
+						j = j*10
+						checkerList.append(j)
+				if diff < 0 and diff > -10:
+					for j in range(abs(diff+1)):
+						j= j+1
+						j = -j
+						checkerList.append(j)
+				if diff <= -10 and diff % 10 == 0:
+					dividedTen = int(diff / 10)
+					for j in range(abs(dividedTen+1)):
+						j = j+1
+						j = j*10
+						j = -j
+						checkerList.append(j)
+				if len(checkerList) != 0:
+					for m in checkerList:
+						n = position + m
+						if board[n].name != " ":
+							print("Piece in the way")
+							return False				
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
+		class King():
+			def __init__(self, position, move):
+				self.name = "-King"
+				self.colour = "Black"
+				self.position= position
+				self.ability=[1,9,10,11,-1,-9,-10,-11]
+				self.alive=True
+
+			def possibleMoves(self):
+				possibleMove = []
+				for abilities in self.ability:
+						possibleMove.append(self.position + abilities)
+				return possibleMove
+
+			def makeMove(self, placePiece, board, whitePieces, blackPieces):
+				abilities = self.possibleMoves()
+				for i in abilities:
+					if str(i) == str(placePiece):
+						if self.moveCheck(board, placePiece, self.position) == True:
+							self.position=int(placePiece)
+							placePiece = int(placePiece)
+							for i,j in blackPieces.items():
+								for h in j:
+									if h.position == placePiece:
+										j.remove(h)
+						else:
+							pass
+						break
+
+			def moveCheck(self, board, i, position):
+				i = int(i)
+				position = int(position)
+				added = i
+				if str(added)[0] == 9 or str(added)[1] == 9 or added > 88:
+					return False
+				diff = i - position
+				print('diff',diff)
+				checkerList = []
+							
+				
+				if board[i].name == " ":
+					board[i].position = ' '
+					return True
+				else:
+					if board[i].colour == "Black":
+						return True
+						
+					if board[i].colour == "White":
+						print("Thats your piece")
+						return False
+
 					
 				
 	def startingPosition(White, Black):
@@ -356,11 +887,39 @@ class Chess:
 		whiteBishops.append(White.Bishop(61, "0"))
 		whitePieces["bishops"] = whiteBishops
 
+		blackBishops = []
+		blackBishops.append(Black.Bishop(38, "0"))
+		blackBishops.append(Black.Bishop(68, "0"))
+		blackPieces["bishops"] = blackBishops
+
 		# KNIGHTS
 		whiteKnights = []
 		whiteKnights.append(White.Knight(21, "0"))
 		whiteKnights.append(White.Knight(71, "0"))
 		whitePieces["knights"] = whiteKnights
+
+		blackKnights = []
+		blackKnights.append(Black.Knight(28, "0"))
+		blackKnights.append(Black.Knight(78, "0"))
+		blackPieces["knights"] = blackKnights
+
+		# QUEENS
+		whiteQueen= []
+		whiteKnights.append(White.Queen(41, "0"))
+		whitePieces["queen"] = whiteQueen
+
+		blackQueen= []
+		blackKnights.append(Black.Queen(48, "0"))
+		blackPieces["queen"] = blackQueen
+
+		# KINGS
+		whiteKing= []
+		whiteKing.append(White.King(51, "0"))
+		whitePieces["king"] = whiteKing
+
+		blackKing= []
+		blackKing.append(Black.King(58, "0"))
+		blackPieces["king"] = blackKing
 
 
 		return whitePieces, blackPieces
@@ -440,7 +999,7 @@ class Chess:
 							
 							board[k.position] = ' '
 
-							k.makeMove(placePiece)
+							k.makeMove(placePiece, board, whitePieces, blackPieces)
 
 							print('New position', k.position)
 							board = printBoard(whitePieces, blackPieces, board, Empty)
