@@ -451,7 +451,7 @@ class Chess:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
 							print(placePiece)
-							for i,j in blackPieces.items():
+							for i,j in whitePieces.items():
 								for h in j:
 									if h.position == placePiece:
 										j.remove(h)
@@ -471,10 +471,10 @@ class Chess:
 					board[i].position = ' '
 					return True
 				else:
-					if board[i].colour == "Black":
+					if board[i].colour == "White":
 						return True
 						
-					if board[i].colour == "White":
+					if board[i].colour == "Black":
 						print("Thats your piece")
 						return False
 					
@@ -501,7 +501,7 @@ class Chess:
 						if self.moveCheck(board, placePiece, self.position) == True:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
-							for i,j in blackPieces.items():
+							for i,j in whitePieces.items():
 								for h in j:
 									if h.position == placePiece:
 										j.remove(h)
@@ -550,10 +550,10 @@ class Chess:
 					board[i].position = ' '
 					return True
 				else:
-					if board[i].colour == "Black":
+					if board[i].colour == "White":
 						return True
 						
-					if board[i].colour == "White":
+					if board[i].colour == "Black":
 						print("Thats your piece")
 						return False
 
@@ -578,7 +578,7 @@ class Chess:
 						if self.moveCheck(board, placePiece, self.position) == True:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
-							for i,j in blackPieces.items():
+							for i,j in whitePieces.items():
 								for h in j:
 									if h.position == placePiece:
 										j.remove(h)
@@ -614,7 +614,6 @@ class Chess:
 						k = k * 9
 						checkerList.append(-k)
 				if diff < 0 and diff % 11 == 0:
-					print("yo")
 					howMany = int(abs(diff) / 11)
 					for j in range(howMany-1):
 						k = j+1
@@ -634,10 +633,10 @@ class Chess:
 					board[i].position = ' '
 					return True
 				else:
-					if board[i].colour == "Black":
+					if board[i].colour == "White":
 						return True
 						
-					if board[i].colour == "White":
+					if board[i].colour == "Black":
 						print("Thats your piece")
 						return False
 
@@ -663,7 +662,7 @@ class Chess:
 						if self.moveCheck(board, placePiece, self.position) == True:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
-							for i,j in blackPieces.items():
+							for i,j in whitePieces.items():
 								for h in j:
 									if h.position == placePiece:
 										j.remove(h)
@@ -686,10 +685,10 @@ class Chess:
 					board[i].position = ' '
 					return True
 				else:
-					if board[i].colour == "Black":
+					if board[i].colour == "White":
 						return True
 						
-					if board[i].colour == "White":
+					if board[i].colour == "Black":
 						print("Thats your piece")
 						return False
 
@@ -716,7 +715,7 @@ class Chess:
 						if self.moveCheck(board, placePiece, self.position) == True:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
-							for i,j in blackPieces.items():
+							for i,j in whitePieces.items():
 								for h in j:
 									if h.position == placePiece:
 										j.remove(h)
@@ -759,7 +758,7 @@ class Chess:
 						k = k * 11
 						checkerList.append(-k)
 
-				if diff > 0 and diff < 10:
+				if diff > 0 and diff < 9:
 					for j in range(diff-1):
 						checkerList.append(j+1)
 				if diff >= 10 and diff % 10 == 0:
@@ -768,7 +767,7 @@ class Chess:
 						j = j+1
 						j = j*10
 						checkerList.append(j)
-				if diff < 0 and diff > -10:
+				if diff < 0 and diff > -9:
 					for j in range(abs(diff+1)):
 						j= j+1
 						j = -j
@@ -791,16 +790,16 @@ class Chess:
 					board[i].position = ' '
 					return True
 				else:
-					if board[i].colour == "Black":
+					if board[i].colour == "White":
 						return True
 						
-					if board[i].colour == "White":
+					if board[i].colour == "Black":
 						print("Thats your piece")
 						return False
 
 		class King():
 			def __init__(self, position, move):
-				self.name = "-King"
+				self.name = "+king"
 				self.colour = "Black"
 				self.position= position
 				self.ability=[1,9,10,11,-1,-9,-10,-11]
@@ -819,7 +818,7 @@ class Chess:
 						if self.moveCheck(board, placePiece, self.position) == True:
 							self.position=int(placePiece)
 							placePiece = int(placePiece)
-							for i,j in blackPieces.items():
+							for i,j in whitePieces.items():
 								for h in j:
 									if h.position == placePiece:
 										j.remove(h)
@@ -842,13 +841,12 @@ class Chess:
 					board[i].position = ' '
 					return True
 				else:
-					if board[i].colour == "Black":
+					if board[i].colour == "White":
 						return True
 						
-					if board[i].colour == "White":
+					if board[i].colour == "Black":
 						print("Thats your piece")
 						return False
-
 					
 				
 	def startingPosition(White, Black):
@@ -996,11 +994,7 @@ class Chess:
 						if pickPiece == str(k.position):
 							print("You picked:",k.name)
 							placePiece = input("Put it where (xy) : ")
-							
-							board[k.position] = ' '
-
 							k.makeMove(placePiece, board, whitePieces, blackPieces)
-
 							print('New position', k.position)
 							board = printBoard(whitePieces, blackPieces, board, Empty)
 							if str(pickPiece) != str(k.position):
